@@ -1,66 +1,66 @@
 from django.test import TestCase
-from .models import *
-
+from .models import UserProfile, Project, Rating, User
 # Create your tests here.
 
-class TestProfile(TestCase):
+class UserProfileTestCase(TestCase):
     def setUp(self):
-        self.user = User(id=1, username='Iano', password='iano2345')
+        self.user = User(username = 'iano', password ='iano2345')
         self.user.save()
+        self.iano= UserProfile(profile_photo='2020-audi-a4-facelift-sketch.jpg', bio = 'okay', phone_number = 783327162, user = self.user)
+        self.iano.save()
 
     def test_instance(self):
-        self.assertTrue(isinstance(self.user, User))
+        self.assertTrue(isinstance(self.iano, UserProfile))
 
-    def test_save_user(self):
-        self.user.save()
+    def test_save_method(self):
+        self.iano.save_profile()
+        profile = UserProfile.objects.all()
+        self.assertTrue(len(profile)>0)
 
-    def test_delete_user(self):
-        self.user.delete()
-class PostTest(TestCase):
-    def setUp(self):
-        self.user = User.objects.create(id=1, username='Iano')
-        self.post = Post.objects.create(id=1, title='test post', photo='https://ucarecdn.com/0ccf61ff-508e-46c6-b713-db51daa6626e', description='desc',
-                                        user=self.user, url='http://ur.coml')
+    def test_delete_method(self):
+        self.iano.save_profile()
+        profile = UserProfile.objects.all()
+        self.iano.delete_profile()
+        self.assertTrue(len(profile)==0)
+
+class TestProject(TestCase):
+    def setUP(self):
+        self.iano = UserProfile(profile_photo='2020-audi-a4-facelift-sketch.jpg', bio = 'software developer',phone_number = 717878813, user = User(username = 'iano', password ='iano2345'))
+        self.iano.save_profile()
+
+        self.new_project = Project(project_title = 'News-App', project_image='JPEG image', project_description='okay', project_link='https://ianonewsapp.herokuapp.com/', user = self.iano)
+        self.new_project.save()
 
     def test_instance(self):
-        self.assertTrue(isinstance(self.post, Post))
+        self.assertTrue(isinstance(self.new_project, Project))
 
-    def test_save_post(self):
-        self.post.save_post()
-        post = Post.objects.all()
-        self.assertTrue(len(post) > 0)
 
-    def test_get_posts(self):
-        self.post.save()
-        posts = Post.all_posts()
-        self.assertTrue(len(posts) > 0)
+    def test_save_method(self):
+        self.new_project.save_project()
+        projects = Project.objects.all()
+        self.assertTrue(len(projects)>0)
 
-    def test_search_post(self):
-        self.post.save()
-        post = Post.search_project('test')
-        self.assertTrue(len(post) > 0)
+    def test_delete_method(self):
+        self.new_project.save_project()
+        projects = Project.objects.all()
+        self.new_project.delete_project()
+        self.assertTrue(len(projects)==0)
 
-    def test_delete_post(self):
-        self.post.delete_post()
-        post = Post.search_project('test')
-        self.assertTrue(len(post) < 1)
-
-class RatingTest(TestCase):
+class TestRating(TestCase):
     def setUp(self):
-        self.user = User.objects.create(id=1, username='Iano')
-        self.post = Post.objects.create(id=1, title='test post', photo='https://ucarecdn.com/0ccf61ff-508e-46c6-b713-db51daa6626e', description='desc',
-                                        user=self.user, url='http://ur.coml')
-        self.rating = Rating.objects.create(id=1, design=6, usability=7, content=9, user=self.user, post=self.post)
+        self.iano = UserProfile(profile_photo='2020-audi-a4-facelift-sketch.jpg', bio = 'software developer',phone_number = 783327162, user = User(username = 'iano', password ='iano2345'))
+        self.iano.save_profile()
+
+        self.new_project = Project(project_title = 'News-App', project_image='JPEG image', project_description='software developer', project_link='https://ianonewsapp.herokuapp.com/', user = self.iano)
+        self.new_project.save()
+
+        self.rating = Rating(design=2, usability=3, content=4, user = self.iano, project=self.new_project)
+        self.rating.save()
 
     def test_instance(self):
         self.assertTrue(isinstance(self.rating, Rating))
 
-    def test_save_rating(self):
+    def test_save_method(self):
         self.rating.save_rating()
         rating = Rating.objects.all()
-        self.assertTrue(len(rating) > 0)
-
-    def test_get_post_rating(self, id):
-        self.rating.save()
-        rating = Rating.get_ratings(post_id=id)
-        self.assertTrue(len(rating) == 1)
+        self.assertTrue(len(rating)>0)

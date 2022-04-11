@@ -1,88 +1,53 @@
 from django.db import models
 from django.contrib.auth.models import User
-from pyuploadcare.dj.models import ImageField
-from django.db.models.signals import post_save
-from django.dispatch import receiver
-import datetime as dt
+from cloudinary.models import CloudinaryField
+
 
 # Create your models here.
-class Profile(models.Model):
-    user = models.OneToOneField(User, on_delete=models.CASCADE, related_name='profile')
-    profile_picture = models.ImageField(upload_to='images/', default='default.png')
-    bio = models.TextField(max_length=500, default="My Bio", blank=True)
-    name = models.CharField(blank=True, max_length=120)
-    location = models.CharField(max_length=60, blank=True)
-    contact = models.EmailField(max_length=100, blank=True)
 
+class UserProfile(models.Model):
+    user = models.OneToOneField(User, on_delete=models.CASCADE, default=1)
+    profile_photo = CloudinaryField('profile')
+    bio = models.TextField(default='')
+    phone_number = models.IntegerField(default=717878813)
+
+    
     def __str__(self):
-        return f'{self.user.username} Profile'
+        return self.user
 
-    @receiver(post_save, sender=User)
-    def create_user_profile(sender, instance, created, **kwargs):
-        if created:
-            Profile.objects.create(user=instance)
+    def save_profile(self):
+        self.save()
 
-    @receiver(post_save, sender=User)
-    def save_user_profile(sender, instance, **kwargs):
-        instance.profile.save()
-        
-class Post(models.Model):
-    title = models.CharField(max_length=155)
-    url = models.URLField(max_length=255)
-    description = models.TextField(max_length=255)
-    technologies = models.CharField(max_length=200, blank=True)
-    photo = ImageField(manual_crop='1280x720')
-    user = models.ForeignKey(User, on_delete=models.CASCADE, related_name="posts")
-    date = models.DateTimeField(auto_now_add=True, blank=True)
+    def delete_profile(self):
+        self.delete()
 
-    def __str__(self):
-        return f'{self.title}'
 
-    def delete_post(self):
+class Project(models.Model):
+    project_title = models.CharField(max_length= 30)
+    project_image = CloudinaryField('images')
+    project_description = models.TextField()
+    project_link = models.URLField()
+    profile = models.ForeignKey(User, on_delete=models.CASCADE, default=1)
+
+    
+    def save_project(self):
+        self.save()
+
+    def delete_project(self):
         self.delete()
 
     @classmethod
-    def search_project(cls, title):
-        return cls.objects.filter(title__icontains=title).all()
+    def search_project(cls, search_term):
+        return cls.objects.filter(project_title__icontains=search_term).all()
 
-    @classmethod
-    def all_posts(cls):
-        return cls.objects.all()
-
-    def save_post(self):
-        self.save()
 class Rating(models.Model):
-    rating = (
-        (1, '1'),
-        (2, '2'),
-        (3, '3'),
-        (4, '4'),
-        (5, '5'),
-        (6, '6'),
-        (7, '7'),
-        (8, '8'),
-        (9, '9'),
-        (10, '10'),
-    )
+    design = models.IntegerField(choices=list(zip(range(1, 11), range(1, 11))), default=1)
+    usability = models.IntegerField(choices=list(zip(range(1, 11), range(1, 11))), default=1)
+    content = models.IntegerField(choices=list(zip(range(1, 11), range(1, 11))), default=1)
+    project = models.ForeignKey(Project, on_delete=models.CASCADE)
 
-    design = models.IntegerField(choices=rating, default=0, blank=True)
-    usability = models.IntegerField(choices=rating, blank=True)
-    content = models.IntegerField(choices=rating, blank=True)
-    score = models.FloatField(default=0, blank=True)
-    design_average = models.FloatField(default=0, blank=True)
-    usability_average = models.FloatField(default=0, blank=True)
-    content_average = models.FloatField(default=0, blank=True)
-    user = models.ForeignKey(User, on_delete=models.CASCADE, null=True, related_name='rater')
-    post = models.ForeignKey(Post, on_delete=models.CASCADE, related_name='ratings', null=True)
+    def __str__(self):
+        return f'{self.project} Rating' 
 
     def save_rating(self):
         self.save()
-
-    @classmethod
-    def get_ratings(cls, id):
-        ratings = Rating.objects.filter(post_id=id).all()
-        return ratings
-
-    def __str__(self):
-        return f'{self.post} Rating'
-
