@@ -11,10 +11,16 @@ https://docs.djangoproject.com/en/3.2/ref/settings/
 """
 
 from pathlib import Path
+import cloudinary
+import cloudinary.uploader
+import cloudinary.api
 import os
-import dj_database_url
-import django_heroku
-from decouple import config, Csv
+
+cloudinary.config( 
+  cloud_name = "iainoo", 
+  api_key = "166495192544533", 
+  api_secret = "1G7wj0mGvv5W8yw9JaOeFZkEUPE" 
+)
 
 
 # Build paths inside the project like this: BASE_DIR / 'subdir'.
@@ -43,17 +49,9 @@ INSTALLED_APPS = [
     'django.contrib.sessions',
     'django.contrib.messages',
     'django.contrib.staticfiles',
-    'crispy_forms',
     'rest_framework',
-    'pyuploadcare.dj',
+    'claudinary',
 ]
-
-UPLOADCARE = {
-    'pub_key': '5f9147903ea8ef445f4c',
-    'secret': 'e7a2e543f08e8fbea69c',
-}
-
-CRISPY_TEMPLATE_PACK = 'bootstrap4'
 
 MIDDLEWARE = [
     'django.middleware.security.SecurityMiddleware',
@@ -92,7 +90,7 @@ WSGI_APPLICATION = 'awwards.wsgi.application'
 DATABASES = {
     'default': {
         'ENGINE': 'django.db.backends.postgresql',
-        'NAME': 'awwards',
+        'NAME': 'awards',
         'USER': 'moringa',
         'PASSWORD': 'Access',
     }
@@ -134,27 +132,8 @@ USE_TZ = True
 
 # Static files (CSS, JavaScript, Images)
 # https://docs.djangoproject.com/en/3.2/howto/static-files/
-TATICFILES_STORAGE = 'whitenoise.storage.CompressedManifestStaticFilesStorage'
 
-STATIC_ROOT = os.path.join(BASE_DIR, 'staticfiles')
 STATIC_URL = '/static/'
-
-STATICFILES_DIRS = (
-    os.path.join(BASE_DIR, 'static'),
-)
-MEDIA_ROOT = os.path.join(BASE_DIR, 'media')
-MEDIA_URL = '/media/'
-
-LOGIN_REDIRECT_URL = 'index'
-
-LOGOUT_REDIRECT_URL = 'index'
-
-REST_FRAMEWORK = {
-    'DEFAULT_PERMISSION_CLASSES': [
-        'rest_framework.permissions.DjangoModelPermissionsOrAnonReadOnly'
-    ],
-    'DEFAULT_VERSIONING_CLASS': 'rest_framework.versioning.NamespaceVersioning'
-}
 
 # Default primary key field type
 # https://docs.djangoproject.com/en/3.2/ref/settings/#default-auto-field
