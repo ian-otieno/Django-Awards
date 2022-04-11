@@ -29,3 +29,19 @@ def index(request):
     except Post.DoesNotExist:
         posts = None
     return render(request, 'index.html', {'posts': posts, 'form': form, 'random_post': random_post})
+    
+class ProfileViewSet(viewsets.ModelViewSet):
+    queryset = Profile.objects.all()
+    serializer_class = ProfileSerializer
+
+
+class UserViewSet(viewsets.ModelViewSet):
+    queryset = User.objects.all()
+    serializer_class = UserSerializer
+
+
+class PostViewSet(viewsets.ModelViewSet):
+    queryset = Post.objects.all()
+    serializer_class = PostSerializer
+
+
