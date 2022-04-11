@@ -1,10 +1,9 @@
 from django.db import models
 from django.contrib.auth.models import User
-from cloudinary.models import CloudinaryField
+from pyuploadcare.dj.models import ImageField
 from django.db.models.signals import post_save
 from django.dispatch import receiver
 import datetime as dt
-from django.forms import ImageField
 
 # Create your models here.
 class Profile(models.Model):

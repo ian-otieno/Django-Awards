@@ -11,16 +11,6 @@ https://docs.djangoproject.com/en/3.2/ref/settings/
 """
 
 from pathlib import Path
-import cloudinary
-import cloudinary.uploader
-import cloudinary.api
-import os
-
-cloudinary.config( 
-  cloud_name = "iainoo", 
-  api_key = "166495192544533", 
-  api_secret = "1G7wj0mGvv5W8yw9JaOeFZkEUPE" 
-)
 
 
 # Build paths inside the project like this: BASE_DIR / 'subdir'.
@@ -48,7 +38,18 @@ INSTALLED_APPS = [
     'django.contrib.sessions',
     'django.contrib.messages',
     'django.contrib.staticfiles',
+    'myawwards',
+    'crispy_forms',
+    'rest_framework',
+    'pyuploadcare.dj',
 ]
+
+UPLOADCARE = {
+    'pub_key': '5f9147903ea8ef445f4c',
+    'secret': 'e7a2e543f08e8fbea69c',
+}
+
+CRISPY_TEMPLATE_PACK = 'bootstrap4'
 
 MIDDLEWARE = [
     'django.middleware.security.SecurityMiddleware',
