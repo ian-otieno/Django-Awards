@@ -91,7 +91,7 @@ def edit_profile(request, username):
     }
     return render(request, 'edit.html', params)
 
- @login_required(login_url='login')
+@login_required(login_url='login')
 def project(request, post):
     post = Post.objects.get(title=post)
     ratings = Rating.objects.filter(user=request.user, post=post).first()
@@ -137,3 +137,17 @@ def project(request, post):
     return render(request, 'project.html', params)
 
    
+def search_project(request):
+    if request.method == 'GET':
+        title = request.GET.get("title")
+        results = Post.objects.filter(title__icontains=title).all()
+        print(results)
+        message = f'name'
+        params = {
+            'results': results,
+            'message': message
+        }
+        return render(request, 'results.html', params)
+    else:
+        message = "You haven't searched for any image category"
+    return render(request, 'results.html', {'message': message})
