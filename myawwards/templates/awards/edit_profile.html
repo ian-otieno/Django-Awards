@@ -1,0 +1,40 @@
+{% extends 'awards/base.html' %}
+{% load bootstrap4 %} {% load static %}
+
+{% block content %}
+<div class="container-fluid" style="padding-top: 90px; background-color: #023047; color: antiquewhite; font-size: 25px;font-family: Assistant;">
+    <div class="row">
+        <h2 class="text-center">Update for {{user.username}}</h2>
+        <div class="col-md-4"></div>
+        <div class="col-md-4">
+            <div class="content-section">
+               
+                <div class="media">
+                    <img src="{{ MEDIA_URL}}{{user.userprofile.profile_photo.url}}" alt="">
+                    <div class="media-body">
+                        <h2 class="account-heading">{{user.username}}</h2>
+                    </div>
+                </div>
+
+                <div class="form-group">
+                    <form method="POST">
+
+                        {% csrf_token %}
+
+                        {{ user_form.as_p }}
+                        {{ profile_form.as_p }}
+                        <button type="submit" class="btn btn-primary">Update Profile</button>
+                    </form>
+                </div>
+            </div>
+        </div>
+        <div class="col-md-4"></div>
+    </div>
+</div>
+</div>
+
+
+{% endblock %}
+{% block scripts %} {{block.super}}
+<script type="text/javascript" src="{% static 'js/main.js '%}"></script>
+{% endblock %}

@@ -1,0 +1,25 @@
+{% extends 'awards/base.html' %}
+{% load bootstrap4 %} {% load static %}
+
+{% block content %}
+<div class="continer-fluid " style="padding-top: 90px; background-color: #023047;font-family: Assistant;">
+    <div class="container" style="padding-top: 70px">
+        <div class="row">
+            <div class="col-md-4"></div>
+            <div class="col-md-4">
+                <p class="text-lg" style="color: antiquewhite; font-size: 30px;">Are you sure you want to delete {{item}}</p>
+                
+                <div style="display: flex; padding: auto;">
+                    <a  class="btn btn-primary btn-md" href="{% url 'index' %}">Cancel</a>
+                    <form method="POST" action="">
+                        {% csrf_token %}
+                        <input class="btn btn-danger btn-lg" type="submit" name="Confirm"  style="margin-left: 20px;">
+                    </form></div>
+                
+            </div>
+            <div class="col-md-4"></div>
+        </div>
+    </div>
+</div>
+
+{% endblock %}

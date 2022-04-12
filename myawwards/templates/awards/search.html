@@ -1,0 +1,42 @@
+{% extends 'awards/base.html' %}
+{% load bootstrap4 %} {% load static %}
+
+{% block content %}
+<div class="continer-fluid" style="padding-top: 90px; background-color: #023047;font-family: Assistant;">
+  <div class="container" style="padding-top: 100px; color: antiquewhite;">
+
+    <div class="row">
+      {% if projects%}
+      <h2>Found {{ projects|length }} projects</h2>
+      {% else %}
+      <h2> Found 0 projects for the search term {{message}}</h2>
+      {% endif %}
+
+    </div>
+
+    <div class="row">
+      <div class="col-md-3"></div>
+      {% if projects %}
+      {% for project in projects %}
+      
+      <div class=" col-md-6">
+        <div class="panel">
+          <div class="panel-header">
+            <h1 style="color: blue;">{{project.project_title}}</h1>
+          </div>
+          <div class="panel-body"><img src="{{project.project_image.url}}" style="height: 400px; width: 500px;" alt="">
+            <p style="color: blue;">{{project.project_description}}</p>
+          </div>
+        </div>
+      </div>
+      <div class="col-md-3"></div>
+      {% endfor %}
+      {% endif %}
+    </div>
+  </div>
+
+</div>
+{% endblock %}
+{% block scripts %} {{block.super}}
+<script type="text/javascript" src="{% static 'js/main.js '%}"></script>
+{% endblock %}

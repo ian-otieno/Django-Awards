@@ -1,0 +1,48 @@
+{% extends 'awards/base.html' %}
+{% load bootstrap4 %} {% load static %}
+<link href="https://fonts.googleapis.com/css2?family=Assistant:wght@300&family=Nanum+Gothic:wght@700&display=swap"
+  rel="stylesheet">
+
+{% block content %}
+<div class="container-fluid" style="padding-top: 60px; background-color: #023047;font-family: Assistant;">
+  <div class="container" style="padding-top: 70px;">
+    <div class="row">
+      <div class="col-md-6" style="color: antiquewhite;">
+        <h1>Profile Information</h1>
+        <img src="{{user.userprofile.profile_photo.url}}" alt="Profile Photo" style="border-radius: 4px;"><br>
+        <h3> Name: <span class="text text-capitalize">{{user.first_name}} {{user.last_name}}</span></h3>
+        <p><span class="text-strong">Bio </span> :{{user.userprofile.bio}}</p><br>
+        <h2>Contact Info</h2>
+        <p>Email :{{user.email}}</p>
+        <p>Phone Number : {{user.userprofile.phone_number}}</p>
+        <hr>
+        <button class="btn btn-secondary"> <a href="{% url 'edit_profile' %}"> Edit Profile</a> </button>
+      </div>
+
+      <div class="col-md-6">
+        <h2 class="text-center" style="color: antiquewhite;">Projects</h2>
+        {% if user.is_authenticated %}
+        {% for project in projects %}
+        <ol>
+          <li>
+            <p style="display: flex; justify-content: space-evenly;">
+              <a style="color: antiquewhite; font-family: Assistant; font-size: 25px; text-transform: capitalize;"
+                href="{{project.project_link}}">{{ project.project_title}}</a>
+                <button class="btn btn-md btn-warning"><a href="{% url 'delete_project' project.id %}">Delete</a></button>
+            </p>
+          </li>
+        </ol>
+       
+        {% endfor %}
+        {% endif %}
+
+      </div>
+    </div>
+  </div>
+
+</div>
+
+{% endblock %}
+{% block scripts %} {{block.super}}
+<script type="text/javascript" src="{% static 'js/main.js '%}"></script>
+{% endblock %}

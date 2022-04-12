@@ -1,0 +1,33 @@
+{% load static %}
+{% load bootstrap4 %}
+
+<!DOCTYPE html>
+<html>
+  <head>
+    <meta http-equiv="Content-Type" content="text/html;charset=UTF-8">
+    <meta name='viewport' content='width=device-width, initial-scale=1'>
+    <link href="https://fonts.googleapis.com/css?family=Roboto" rel="stylesheet">
+    <link rel="stylesheet" href="{% static 'css/nav.css' %}">
+  </head>
+  <body>
+    <nav id='main' class='navbar navbar-inverse'>
+        <div class='navbar-right' id='login' class="col-sm-4">
+          <form class='navbar-form navbar-right' action="/accounts/login/" method="post">
+            {% csrf_token %}
+            <div class="form-group">
+              <input type="text" class='form-control' autocomplete="off" name='username' placeholder='Username'>
+            </div>
+            <div class="form-group">
+              <input type="password" class='form-control' name='password' placeholder='Password'>
+            </div>
+            <button type='submit' class='btn btn-default'>Login</button>
+            <input type="hidden" name="next" value="{{next}}">
+          </form>
+        </div>
+      </div>
+    </nav>
+    <div class="container text-center">
+      <p style="font-family: 'Abril Fatface', cursive;">please log in to access the page</p>
+  </div>
+  </body>
+</html>
