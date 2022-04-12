@@ -7,6 +7,9 @@ This Python dJango awards web application was created on 11/04/2022
 ## Description
 This is a django application where users can posts their projects and have them rated according to usabilty, design and content
 
+## Live Demo
+Click on the link below to view the site;https://ianoawards.herokuapp.com/
+
 ## User Stories
 These are the behaviours/features that the application implements for use by a user and writer.
 
